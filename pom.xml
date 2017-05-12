@@ -53,6 +53,19 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+      <!-- pmd -->
+      <plugin>
+        <groupId>org.apache.maven.plugin</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>3.0.1</version>
+        <executions>
+        	<execution>
+        		<goals>
+        			<goal>check</goal>
+        		</goals>
+        	</execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
