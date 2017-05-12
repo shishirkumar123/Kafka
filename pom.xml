@@ -55,7 +55,7 @@
       </plugin>
       <!-- pmd -->
       <plugin>
-        <groupId>org.apache.maven.plugin</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
         <version>3.0.1</version>
         <executions>
