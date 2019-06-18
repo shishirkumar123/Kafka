@@ -1,0 +1,97 @@
+Running console based Kafka 
+===========================
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+.\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic promotion
+.\bin\windows\kafka-console-producer.bat --broker-list localhost:9092 --topic promotion
+.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic promotion --from-beginning
+----
+List of Topics -
+.\bin\windows\kafka-topics.bat --list --zookeeper localhost:2181
+Delete a Topic
+.\bin\windows\kafka-topics.bat --delete --zookeeper localhost:2181 --topic test [work only if delete.topic.enable is set to true]
+[This only marks for deletion. When does actual deletion happens? If you fire 'describe' on the deleted Topic, you may get some info with MarkedForDeletion:true]
+Describe a Topic -
+.\bin\windows\kafka-topics.bat --describe --zookeeper localhost:2181 --topic test
+
+Create partition during topic creation
+.\bin\windows\kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 5 --topic promotion1
+
+Consume from a topic specifying group
+.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic promotion1 --group 1
+
+Consume from a topic specifying partition and offset
+.\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic promotion1 --partition 0 --offset 61
+[if specifying offset, you must specify partition]
+
+Note that partition is not specified during publishing. Once a producer start publishing, the content goes evenly to all partitions.
+[Observation - For all the message that I published, one message got occupied in one offset] 
+
+Q1. What will happen if you have only one broker, but you are trying to create topic with replication factor 3?
+Q2. How does Kafka ensure that the message is consumed only once?
+Q3. How does consumer decide from which replication to read? Leader's copy?
+
+======================
+Theory
+--------
+Kafka Server = Kafka Broker
+Kafka Cluster - Multiple Kafka Servers co-ordinates through Zookeeper.
+Topic can be divided into multiple Partition
+Each Partition can exist on different machine.
+A partition cant be divided further into multiple machine.
+Each Partition has offsets. How big is one offset.
+
+Replication factor is associated with Topic.
+For a given Topic, one broker is nominated a leader. Only leader talks to Producer and Consumer for that Topic and sends acknowledgement to producer. 
+Leader maintains first copy of replication, followers maintain rest.
+
+Sending message requires properties - bootstrap.servers, serializer(to convert object into byte stream)
+3 approach for sending - fire and forget, wait till acknowledgement(Future.get), async.
+Serialization - Use default or Custom. When message object changes, need to update custom serializer accordingly. 
+	But then old message cant be read with new Serializer. Avro helps in these situations.
+
+If order is important then there are two ways to achieve it-
+	1. Use Synchronous send
+	2. set max.in.flight.request.per.connection = 1
+	Of course, then guaranty comes at the cost of throughput.
+
+Consumer - There is a construct consumer group which are set of related consumers working together to achieve high throughput. 
+	A consumer is assigned to a partition. For a given consumer group, only single consumer can be assigned to partition.
+	One of the Kafka broker is made Group co-ordinator. Group co-ordinator maintains list of consumers and initiates a rebalancing when a member enter/exit.
+	First consumer of the group becomes the group leader, performs the rebalancing when a member enters/exits.
+	One consumer can subscribe to list of topics.
+	Consumer polls the topic in infinite loop. Optionally it can be given a scheduler so that it pools based on scheduler settings.
+	Q. Why Kafka choose consumer polling approach. Why it didn't choose broker notifying consumer approach?
+	
+Offset
+	Current Offset - Maintains current position of consumer read.
+	Committed offset - Consumer has confirmed about processing.
+	These offsets play a role in rebalancing
+
+RebalanceListener
+
+Partition assignment can be done by Kafka or us.
+
+Kerberos security
+Serializer problem
+Message encryption
+
+Common Configurations
+--------------
+broker.id - Unique identifier of broker.
+port - Port on which broker runs.
+log.dirs - the path where logs of broker will be written.
+zookeeper.connect - using this broker knows where is zookeeper running.
+delete.topic.enable
+autocreate.topic.enable
+default.replication.factor
+num.partition
+log.retention.ms - How long to keep message(Default 7 days)
+log.retention.bytes - Max capacity of size of message a partition will hold. Beyond that, Kafka will do the cleanup.
+
+Producer specific configuration
+--------------------------------
+ack - Acknowledgement is required from broker to producer. If set to all, then the leader broker will confirm from all 
+	the follower broker whether message was successfully received, then only send the acknowledgement message.(slowest)
+retries
+max.in.flight.request.per.connection - how many in flight request is allowed that are still not acknowledged.
