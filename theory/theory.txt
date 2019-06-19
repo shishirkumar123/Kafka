@@ -58,7 +58,9 @@ If order is important then there are two ways to achieve it-
 	Of course, then guaranty comes at the cost of throughput.
 
 Consumer - There is a construct consumer group which are set of related consumers working together to achieve high throughput. 
-	A consumer is assigned to a partition. For a given consumer group, only single consumer can be assigned to partition.
+	A consumer is assigned to a partition. For a given consumer group, only single consumer can be assigned to partition. 
+	Who does this assignment?
+	[Observation - While creating a group, options group and partition cannot be specified together.]
 	One of the Kafka broker is made Group co-ordinator. Group co-ordinator maintains list of consumers and initiates a rebalancing when a member enter/exit.
 	First consumer of the group becomes the group leader, performs the rebalancing when a member enters/exits.
 	One consumer can subscribe to list of topics.
