@@ -27,6 +27,7 @@ Consume from a topic specifying partition and offset
 Note that partition is not specified during publishing. Once a producer start publishing, the content goes evenly to all partitions.
 [Observation - For all the message that I published, one message got occupied in one offset] 
 [Obsrvation - Message can be consumed from any broker. I created a topic(replication factor 2) when broker 1 and 2 were running. Then published the message. Then I was able to consume using both broker 1 and 2. Surprisingly, I created broker 3 later on. I was able to consume from broker 3 also.]
+[Observation - When I created 2 consumer in a group which subscribed to a topic with multiple partition, I must have to provide partition number while consuming. Otherwise, consumers were not able to consume]
 
 Q1. What will happen if you have only one broker, but you are trying to create topic with replication factor 3?
 Q2. How does Kafka ensure that the message is consumed only once?
