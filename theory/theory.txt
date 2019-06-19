@@ -93,7 +93,7 @@ autocreate.topic.enable - autocreate or not when producer sends message to a non
 default.replication.factor - default is 1.
 num.partition - default is 1.
 log.retention.ms - How long to keep message(Default 7 days)
-log.retention.bytes - Max capacity of size of message a partition will hold. Beyond that, Kafka will do the cleanup.
+log.retention.bytes - Max capacity of size of message a partition(and not the topic) will hold. Beyond that, Kafka will do the cleanup.
 
 Producer specific configuration
 --------------------------------
