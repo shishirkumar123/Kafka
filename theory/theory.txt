@@ -89,7 +89,7 @@ port - Port on which broker runs.
 log.dirs - the path where logs of broker will be written.
 zookeeper.connect - using this broker knows where is zookeeper running.
 delete.topic.enable - default is false
-autocreate.topic.enable
+autocreate.topic.enable - autocreate or not when producer sends message to a non-existing topic. 
 default.replication.factor
 num.partition
 log.retention.ms - How long to keep message(Default 7 days)
