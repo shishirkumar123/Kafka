@@ -44,7 +44,7 @@ A partition cant be divided further into multiple machine.
 Each Partition has offsets. How big is one offset.
 
 Replication factor is associated with Topic.
-For a given Topic, one broker is nominated a leader. Only leader talks to Producer and Consumer for that Topic and sends acknowledgement to producer. 
+For a given partition of topic, one broker is nominated a leader. Only leader talks to Producer and Consumer for that partition of topic and sends acknowledgement to producer. 
 Leader maintains first copy of replication, followers maintain rest.
 
 Sending message requires properties - bootstrap.servers, serializer(to convert object into byte stream)
