@@ -1,0 +1,38 @@
+Messaging pattern in event driven architecture
+
+
+Command Routing -
+	Route based on target of intend
+		DDD and CQRS: Target aggregate identifier
+	Otherwise
+		Round robin/randomly
+		Based on SLA - High profile customer request send to specific machines only
+		Based on Load
+
+Publish subscribe
+	Message published on consumed by all consumers who subscribed it. 
+	Exclusive consumers (How to handle exclusive consumers in kafka) - Good for high availability, but doesn't scale well
+	Competing consumers - Based on certain criteria it will be decided who will consume
+	Balanced consumers
+
+Query related patterns
+	For certain cases it is important to track who asked for information, what information, when was information asked. No. of request/min/hour/day/week/month
+	Patterns -
+		Point to point - you know who knows the answer. 
+		Scatter-Gather - send request to all consumer, gather information and gent the answer reuested
+------------------
+Event sourcing and CQRS
+Advantage
+	Audit trail
+	Debugging
+	Historic state
+	CQRS/Variant schemas
+	Distribution support
+	In-memory processing
+	Alternative history
+
+Point to consider
+	Manage inconsistency(Eventual consistency)
+	New approach, people are not used to
+	Asynchrony - Event sourcing doesnt need to be asynchronous as it is commonly believed. Example git commit - is synchronous. (even though pull/push is not)
+	
