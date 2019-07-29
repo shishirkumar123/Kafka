@@ -24,7 +24,8 @@ Consume from a topic specifying partition and offset
 .\bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic promotion1 --partition 0 --offset 61
 [if specifying offset, you must specify partition]
 
-Note that partition is not specified during publishing. Once a producer start publishing, the content goes evenly to all partitions.
+Note 1. Partition is not specified during publishing. Once a producer start publishing, the content goes evenly to all partitions.
+Note 2. Partition/consumer group construct defiantly gives you the performance boost but it doesn’t ensure order guarantee across partitions. Order is guaranteed for a given partition only.
 [Observation - For all the message that I published, one message got occupied in one offset] 
 [Obsrvation - Message can be consumed from any broker. I created a topic(replication factor 2) when broker 1 and 2 were running. Then published the message. Then I was able to consume using both broker 1 and 2. Surprisingly, I created broker 3 later on. I was able to consume from broker 3 also.]
 [Observation - When I created 2 consumer in a group which subscribed to a topic with multiple partition, I must have to provide partition number while consuming. Otherwise, consumers were not able to consume]
