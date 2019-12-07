@@ -44,7 +44,7 @@ Each Partition can exist on different machine.
 A partition cant be divided further into multiple machine.
 Each Partition has offsets. How big is one offset.
 
-Replication factor is associated with Topic. All partitions of the topic have same replication factor.
+Replication factor is associated with Topic. All partitions of the topic have same replication factor. For a topic with replication factor 3, each partition will have three copies, one acting as leader, other 2 as follower.
 For a given partition of topic, one broker is nominated a leader. Only leader talks to Producer and Consumer for that partition of topic and sends acknowledgement to producer. 
 Leader maintains first copy of replication, followers maintain rest.
 [ISR - In sync replicas]
