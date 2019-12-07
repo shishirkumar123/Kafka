@@ -44,7 +44,7 @@ Each Partition can exist on different machine.
 A partition cant be divided further into multiple machine.
 Each Partition has offsets. How big is one offset.
 
-Replication factor is associated with Topic.
+Replication factor is associated with Topic. All partitions of the topic have same replication factor.
 For a given partition of topic, one broker is nominated a leader. Only leader talks to Producer and Consumer for that partition of topic and sends acknowledgement to producer. 
 Leader maintains first copy of replication, followers maintain rest.
 [ISR - In sync replicas]
@@ -82,6 +82,8 @@ Partition assignment can be done by Kafka or us.
 Kerberos security
 Serializer problem
 Message encryption
+
+Note - In windows, the content of messages can be found at C:\tmp\kafka-logs
 
 Common Configurations
 --------------
