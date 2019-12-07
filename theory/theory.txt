@@ -49,7 +49,7 @@ For a given partition of topic, one broker is nominated a leader. Only leader ta
 Leader maintains first copy of replication, followers maintain rest.
 [ISR - In sync replicas - replicas that are in sync with leader]
 
-Sending message requires properties - bootstrap.servers, serializer(to convert object into byte stream)
+Sending message requires properties - bootstrap.servers, serializer(to convert object into byte stream). If message sending fails, producers retries if error is recoverable. Producer dont retry if error is non recoverable.
 3 approach for sending - fire and forget, wait till acknowledgement(Future.get), async.
 Serialization - Use default or Custom. When message object changes, need to update custom serializer accordingly. 
 	But then old message cant be read with new Serializer. Avro helps in these situations.
