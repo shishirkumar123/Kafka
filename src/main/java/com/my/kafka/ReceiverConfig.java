@@ -28,7 +28,7 @@ public class ReceiverConfig {
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		// allows a pool of processes to divide the work of consuming and processing records
-		props.put(ConsumerConfig.GROUP_ID_CONFIG, "helloworlda");
+		props.put(ConsumerConfig.GROUP_ID_CONFIG, "helloworld");
 
 		return props;
 	}
